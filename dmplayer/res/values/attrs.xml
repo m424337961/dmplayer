@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TextView">
+        <attr name="mytitle" format="string" />
+        <attr name="number" format="string" />
+    </declare-styleable>
+    
+     <declare-styleable name="ImageView">
+        <attr name="mysrc" format="reference" />
+    </declare-styleable>
+
+</resources>

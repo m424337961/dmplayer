@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_local_song_artist_first_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#aad9d9d9"
+        android:padding="8dp"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:text="A" />
+
+    <com.example.dmplayer.view.InnerListView
+        android:id="@+id/lv_local_song_artist_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </com.example.dmplayer.view.InnerListView>
+
+</LinearLayout>
