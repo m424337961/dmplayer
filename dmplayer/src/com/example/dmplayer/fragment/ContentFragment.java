@@ -106,7 +106,7 @@ public class ContentFragment extends BaseFragment implements OnClickListener{
 		SlidingMenu slidingMenu = homeUI.getSlidingMenu();
 		homeUI.player.setPlayImageView(homeUI.mi);
 		List<AudioInfo> songList = MyMusicPager.getmLocaolSongList();
-		homeUI.player.setTitle(homeUI.mi.getAudioInfo());
+		homeUI.player.setTitle(homeUI.mi);
 		slidingMenu.toggle(); 
 	}
 

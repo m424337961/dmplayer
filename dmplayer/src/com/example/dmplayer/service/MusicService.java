@@ -3,6 +3,7 @@ package com.example.dmplayer.service;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -12,9 +13,12 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 
+import com.example.dmplayer.dao.MyFavorDao;
 import com.example.dmplayer.domain.AudioInfo;
 import com.example.dmplayer.fragment.PlayerFragment;
+import com.example.dmplayer.global.GlobalPlayList;
 
 public class MusicService extends Service {
 
@@ -88,10 +92,42 @@ public class MusicService extends Service {
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				isFirstPlay = true;
+				player.stop();
+//				player.release();
+				nextSong();
 			}
 		});
 	}
 	
+	private void nextSong() {
+		switch (GlobalPlayList.currentList) {
+		case GlobalPlayList.LOCAL_LIST:
+			playLocalNext();
+			break;
+		case GlobalPlayList.FAVOR_LIST:
+			playFavorNext();
+			break;
+		default:
+			break;
+		}
+	}
+
+	//播放我喜欢的列表
+	private void playFavorNext() {
+		MyFavorDao favorDao = new MyFavorDao(this);
+		AudioInfo info = favorDao.findNext(audioInfo.getTitle());
+		if(info != null){
+			play(info);
+		}else{
+			Log.e("aa", "last one");
+		}
+		//设置标题
+	}
+
+	private void playLocalNext() {
+		
+	}
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

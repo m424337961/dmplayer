@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.dmplayer.HomeActivity;
 import com.example.dmplayer.R;
+import com.example.dmplayer.dao.MyFavorDao;
 import com.example.dmplayer.domain.AudioInfo;
 import com.example.dmplayer.domain.MySongList;
 import com.example.dmplayer.engine.AudioProvider;
@@ -57,6 +58,7 @@ public class MyMusicPager extends BasePager implements OnClickListener{
 		mLvSongList.addFooterView(mFootView);
 		
 		mLvSongList.setFocusable(true);
+		setFavorNumber();
 		//×¢²á¼àÌý
 		mSlLocal.setOnClickListener(this);
 		mSlFavor.setOnClickListener(this);
@@ -87,6 +89,12 @@ public class MyMusicPager extends BasePager implements OnClickListener{
 			mLvSongList.setAdapter(mAdapter);
 		};
 	};
+	
+	public void setFavorNumber(){
+		MyFavorDao myFavorDao = new MyFavorDao(mActivity);
+		int favorNumber = myFavorDao.getNumber();
+		mSlFavor.setNumber(favorNumber);
+	}
 	
 	//-----------------------------¼àÌýÆ÷£¬ÊÊÅäÆ÷¶¨ÒåÔÚ´Ë------------------------
 	class SongListAdapter extends BaseAdapter{

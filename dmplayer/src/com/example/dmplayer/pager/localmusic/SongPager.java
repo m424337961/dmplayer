@@ -19,6 +19,7 @@ import com.example.dmplayer.R;
 import com.example.dmplayer.domain.AudioInfo;
 import com.example.dmplayer.engine.AudioProvider;
 import com.example.dmplayer.fragment.ContentFragment;
+import com.example.dmplayer.global.GlobalPlayList;
 import com.example.dmplayer.pager.BasePager;
 import com.example.dmplayer.pager.MyMusicPager;
 
@@ -109,6 +110,7 @@ public class SongPager extends BasePager {
 			homeUi.mi.play(info);
 			homeUi.content.setPlayImageView(homeUi.mi);
 			homeUi.content.setTitle(songName, info.getArtist());
+			GlobalPlayList.currentList = GlobalPlayList.LOCAL_LIST;
 		}
 	}
 	

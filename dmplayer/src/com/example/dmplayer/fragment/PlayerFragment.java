@@ -15,6 +15,7 @@ import com.example.dmplayer.HomeActivity;
 import com.example.dmplayer.R;
 import com.example.dmplayer.dao.MyFavorDao;
 import com.example.dmplayer.domain.AudioInfo;
+import com.example.dmplayer.pager.MyMusicPager;
 import com.example.dmplayer.service.MusicInterface;
 import com.example.dmplayer.utils.MyTimeUtils;
 
@@ -32,7 +33,7 @@ public class PlayerFragment extends BaseFragment implements OnClickListener{
 	private ImageView mIvFavor;
 
 	private HomeActivity homeUI;
-	
+
 	private MyFavorDao mFavorDao;
 
 	@Override
@@ -40,7 +41,7 @@ public class PlayerFragment extends BaseFragment implements OnClickListener{
 		homeUI = (HomeActivity) mActivity;
 
 		mFavorDao = new MyFavorDao(mActivity);
-		
+
 		mRootView = View.inflate(mActivity, R.layout.fragment_home_player, null);
 		mIvPlay = (ImageView) mRootView.findViewById(R.id.iv_home_play);
 		mSbPlay = (SeekBar) mRootView.findViewById(R.id.sb_player);
@@ -68,29 +69,40 @@ public class PlayerFragment extends BaseFragment implements OnClickListener{
 			mIvPlay.setImageResource(R.drawable.player_play);
 		}
 		AudioInfo info = mMusicInterface.getAudioInfo();
-		//设置是否是我的喜欢列表
-		boolean isFavor = mFavorDao.find(info.getTitle());
-		if(isFavor == true){
-			mIvFavor.setBackgroundResource(R.drawable.bubble_favour_red);
+		if(info != null){
+			//设置是否是我的喜欢列表
+			boolean isFavor = mFavorDao.find(info.getTitle());
+			if(isFavor == true){
+				mIvFavor.setBackgroundResource(R.drawable.bubble_favour_red);
+			}else{
+				mIvFavor.setBackgroundResource(R.drawable.bubble_favour);
+			}
 		}else{
 			mIvFavor.setBackgroundResource(R.drawable.bubble_favour);
 		}
-	}
-	
-	public void setTitle(AudioInfo info){
-		
-		mTvPlaySongName.setText(info.getTitle());
-		mTvPlayArtist.setText(info.getArtist());
+
 	}
 
-	
+	public void setTitle(MusicInterface mi){
+		AudioInfo audioInfo = mi.getAudioInfo();
+		if(audioInfo != null){
+			mTvPlaySongName.setText(audioInfo.getTitle());
+			mTvPlayArtist.setText(audioInfo.getArtist());
+		}else{
+			mTvPlaySongName.setText("");
+			mTvPlayArtist.setText("");
+		}
+
+	}
+
+
 	@Override
 	public void initData() {
-		
+
 	}
 
 	private void playMusic(){
-//		mMusicInterface = homeUI.mi;
+		//		mMusicInterface = homeUI.mi;
 		boolean isFirstPlay = mMusicInterface.isFirstPlay();
 		boolean isPlay = mMusicInterface.isPlay();
 		if((isFirstPlay == true)){
@@ -137,6 +149,7 @@ public class PlayerFragment extends BaseFragment implements OnClickListener{
 			mIvFavor.setBackgroundResource(R.drawable.bubble_favour_red);
 			dao.add(audioInfo.getTitle(), audioInfo.getArtist(), audioInfo.getPath());
 		}
+		((MyMusicPager)(homeUI.content.mHomeFragment.getmPagerList().get(0))).setFavorNumber();
 	}
 
 	class PlayerSeekBarListener implements OnSeekBarChangeListener{
@@ -181,8 +194,8 @@ public class PlayerFragment extends BaseFragment implements OnClickListener{
 
 	@Override
 	public boolean onBackPressed() {
-		
-        return false;
+
+		return false;
 	}
 
 }

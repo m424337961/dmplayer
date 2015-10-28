@@ -2,12 +2,14 @@ package com.example.dmplayer.fragment;
 
 import java.util.ArrayList;
 
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.dmplayer.R;
+import com.example.dmplayer.dao.MyFavorDao;
 import com.example.dmplayer.pager.BasePager;
 import com.example.dmplayer.pager.FindPager;
 import com.example.dmplayer.pager.MusicSheetPager;
@@ -23,9 +25,20 @@ public class HomeFragment extends BaseFragment {
 	//--------------------Adapter数据---------------------
 	private String[] mTabIndex = new String[]{"我的音乐", "音乐架", "搜索", "发现"};
 	private ArrayList<BasePager> mPagerList;
+	public ArrayList<BasePager> getmPagerList() {
+		return mPagerList;
+	}
+
+	public void setmPagerList(ArrayList<BasePager> mPagerList) {
+		this.mPagerList = mPagerList;
+	}
+
 	private HomeAdapter mHomeAdapter;
+	public int mFavorNumber;
 
 	private View mRootView;
+	
+	private MyFavorDao mMyFavorDao;
 
 	@Override
 	public View initViews() {
@@ -37,7 +50,7 @@ public class HomeFragment extends BaseFragment {
 
 	@Override
 	public void initData() {
-
+		mMyFavorDao = new MyFavorDao(mActivity);
 		//初始化4个主页的viewpager
 		mPagerList = new ArrayList<BasePager>();
 		mPagerList.add(new MyMusicPager(mActivity));
@@ -50,6 +63,14 @@ public class HomeFragment extends BaseFragment {
 		mIndicator.setViewPager(mViewPagerHome);
 	}
 
+	//show/hide Control
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		((MyMusicPager)mPagerList.get(0)).setFavorNumber();
+		
+	}
+	
 	//-----------------------------监听器，适配器定义在此------------------------
 	public class HomeAdapter extends PagerAdapter{
 
@@ -86,4 +107,5 @@ public class HomeFragment extends BaseFragment {
 	public boolean onBackPressed() {
 		return false;
 	}
+
 }

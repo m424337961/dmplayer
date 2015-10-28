@@ -23,7 +23,7 @@ public class HomeActivity extends SlidingFragmentActivity implements BackHandler
 
 	private static final String FRAG_CONTENT = "content";
 	private static final String FRAG_PLAYER = "player";
-	public static ContentFragment content;
+	public ContentFragment content;
 	public PlayerFragment player;
 	
 	//Serviceœ‡πÿ
@@ -42,7 +42,7 @@ public class HomeActivity extends SlidingFragmentActivity implements BackHandler
 		setBehindContentView(R.layout.activity_left);
 
 		SlidingMenu slidingMenu = getSlidingMenu();
-		slidingMenu.setMode(SlidingMenu.LEFT);
+		slidingMenu.setMode(SlidingMenu.RIGHT);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		
 		
@@ -80,6 +80,12 @@ public class HomeActivity extends SlidingFragmentActivity implements BackHandler
 		public void onServiceDisconnected(ComponentName name) {
 			
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(conn);
 	}
 
 	@Override

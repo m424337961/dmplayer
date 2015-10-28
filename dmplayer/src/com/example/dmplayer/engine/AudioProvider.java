@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.example.dmplayer.domain.AudioInfo;
 
@@ -87,6 +88,7 @@ public class AudioProvider extends MediaProviderFactory {
 	
 	
 	public static AudioInfo getInfoFromName(String name, List<AudioInfo> list){
+		
 		for(AudioInfo audioInfo : list){
 			if(audioInfo.getTitle().equals(name)){
 				return audioInfo;

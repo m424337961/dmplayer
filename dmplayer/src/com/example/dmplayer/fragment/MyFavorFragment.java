@@ -17,6 +17,7 @@ import com.example.dmplayer.R;
 import com.example.dmplayer.dao.MyFavorDao;
 import com.example.dmplayer.domain.AudioInfo;
 import com.example.dmplayer.engine.AudioProvider;
+import com.example.dmplayer.global.GlobalPlayList;
 import com.example.dmplayer.pager.MyMusicPager;
 
 public class MyFavorFragment extends BaseFragment {
@@ -40,26 +41,18 @@ public class MyFavorFragment extends BaseFragment {
 		homeUI = (HomeActivity) mActivity;
 		
 		mFavorDao = new MyFavorDao(mActivity);
-		mLocaolSongList = MyMusicPager.mLocaolSongList;
 		
 		mRootView = View.inflate(mActivity, R.layout.fragment_my_favor, null);
 		mLvFavor = (ListView) mRootView.findViewById(R.id.lv_my_favor);
-//		mLvFavor.setOnItemClickListener(new FavorItemClickListener());
+		mLvFavor.setOnItemClickListener(new FavorItemClickListener());
 		
 		return mRootView;
 	}
+	
 	private List<AudioInfo> mMyFavorList;
 
 	@Override
 	public void initData() {
-		
-		new Thread(){
-			
-			public void run() {
-				mMyFavorList = mFavorDao.findAll();
-				handler.sendEmptyMessage(0);
-			};
-		}.start();
 		
 	}
 
@@ -74,6 +67,24 @@ public class MyFavorFragment extends BaseFragment {
 		return false;
 	}
 
+	//hide/show生命周期方法
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if(hidden == true){
+			//隐藏
+		}else{
+			//显示
+			new Thread(){
+				public void run() {
+					mLocaolSongList = MyMusicPager.mLocaolSongList;
+					mMyFavorList = mFavorDao.findAll();
+					handler.sendEmptyMessage(0);
+				};
+			}.start();
+		}
+	}
+	
 	//-----------------------------监听器，适配器定义在此------------------------
 	class FavorListAdapter extends BaseAdapter{
 
@@ -128,6 +139,7 @@ public class MyFavorFragment extends BaseFragment {
 			homeUi.mi.play(info);
 			homeUi.content.setPlayImageView(homeUi.mi);
 			homeUi.content.setTitle(song, info.getArtist());
+			GlobalPlayList.currentList = GlobalPlayList.FAVOR_LIST;
 		}
 	}
 }
